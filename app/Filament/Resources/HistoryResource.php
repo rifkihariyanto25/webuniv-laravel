@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use AmidEsfahani\FilamentTinyEditor\TinyEditor;
 use App\Filament\Resources\HistoryResource\Pages;
 use App\Filament\Resources\HistoryResource\RelationManagers;
 use App\Models\History;
@@ -23,10 +24,10 @@ class HistoryResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Textarea::make('content')
+                TinyEditor::make('content')
                     ->required()
                     ->columnSpanFull(),
-                Forms\Components\Textarea::make('image')
+                Forms\Components\FileUpload::make('image')
                     ->required()
                     ->columnSpanFull(),
             ]);
@@ -36,6 +37,13 @@ class HistoryResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('content')
+                    ->wrap()
+                    ->html()
+                    ->searchable(),
+                // sama kayak menggunakan src = "lokasi file tersedia"
+                // ini  versi di fillament
+                Tables\Columns\ImageColumn::make('image'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
